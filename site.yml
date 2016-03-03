@@ -27,8 +27,10 @@
 
 - name: ensure the users public key is in ~/.ssh/authorized_keys
   copy:
-    src: ../files/{{ username }}_id_rsa.pub
-    dest: /home/{{ username }}/.ssh/authorized_keys
-    owner: "{{ username }}"
-    group: "{{ username }}"
-    mode: 0600 
+    src: ../files/{{ item }}_id_rsa.pub
+    dest: /home/{{ item }}/.ssh/authorized_keys
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: 0600
+  with_items:
+    - "{{ username }}"
