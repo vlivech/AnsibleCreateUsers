@@ -1,0 +1,34 @@
+---
+  # top level playbook for creating Users
+  # vars set in ../vars/main.yml
+  # username = list of users to ensure are on the servers
+  # userpass = stored in Ansible Vault, the password for each new user
+
+# add users to the targeted servers
+
+- name: ensure these users on the servers
+  user:
+    name: "{{ item }}"
+    password: "{{ userpass }}"
+    with_items:
+      - "{{ username }}"
+
+- name: ensure users are in the sudo group on the RedHat distro family
+  user:
+    name: "{{ item }}"
+    groups: wheel
+    when: ansible_os_family == "RedHat"
+
+- name: ensure users are in the sudo group on the Debian distro family
+  user:
+    name: "{{ item }}"
+    groups: sudo
+    when: ansible_os_family == "Debian"
+
+- name: ensure the users public key is in ~/.ssh/authorized_keys
+  copy:
+    src: ../files/{{ username }}_id_rsa.pub
+    dest: /home/{{ username }}/.ssh/authorized_keys
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    mode: 0600 
