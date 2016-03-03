@@ -1,2 +1,9 @@
 ---
 # vars file for CreateUsers
+# list of users to ensure are on the servers
+username:
+  - exampleUser01
+  - exampleUser02
+  - exampleUser03
+  - exampleUser04
+  - exampleUser05
